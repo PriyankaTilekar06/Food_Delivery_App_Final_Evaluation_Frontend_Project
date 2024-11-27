@@ -1,0 +1,14 @@
+.restro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    background-color: #fff;
+    font-family: Arial, sans-serif;
+    gap: 12px;
+  }
+  
+  .restro img {
+    width: 200px;
+    height: 200px;
+  }
