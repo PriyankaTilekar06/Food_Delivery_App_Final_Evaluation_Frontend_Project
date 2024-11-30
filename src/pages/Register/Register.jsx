@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import styles from "./Register.module.css";
 import logo from "../../assets/logo.png";
 import image from "../../assets/img.png";
 import Footer from "../../components/Footer/Footer";
+import { UserContext } from "../../../context/userContext";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -14,10 +15,11 @@ export default function Register() {
     phone: "",
     email: "",
     password: "",
-  });
+  })
+  
 
   const registerUser = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const { name, phone, email, password } = data;
     try {
       const { data } = await axios.post("/register", {

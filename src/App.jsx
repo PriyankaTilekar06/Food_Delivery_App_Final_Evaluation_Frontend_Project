@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
@@ -21,7 +20,6 @@ axios.defaults.withCredentials = true;
 function App() {
   return (
     <UserContextProvider>
-      <Navbar />
       <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -33,7 +31,7 @@ function App() {
         <Route path="/paymentpage" element={<PaymentPage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/addresspage" element={<AddressPage />} />
-        <Route path="/ordersuccessfull" element={<OrderSucessull />} />
+        <Route path="/ordersuccesfull" element={<OrderSucessull />} />
       </Routes>
     </UserContextProvider>
   );

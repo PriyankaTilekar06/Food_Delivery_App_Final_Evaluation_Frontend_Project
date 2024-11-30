@@ -1,10 +1,5 @@
 import React from "react";
 import styles from "./CheckOutPage.module.css";
-import cart from "../../assets/cart.png";
-import logo from "../../assets/logo.png";
-import { HiLocationMarker } from "react-icons/hi";
-import { FaArrowCircleDown } from "react-icons/fa";
-import { IoIosContact } from "react-icons/io";
 import items1 from "../../assets/items1.png";
 import items2 from "../../assets/items2.png";
 import items3 from "../../assets/items3.png";
@@ -13,54 +8,32 @@ import Footer from "../../components/Footer/Footer";
 import { FaArrowLeft } from "react-icons/fa6";
 import icon from "../../assets/icon.png";
 import { IoIosArrowForward } from "react-icons/io";
-
+import { useNavigate } from "react-router-dom";
+import Navbar from "../../components/Navbar/Navbar";
 
 export default function CheckoutPage() {
+
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);  
+  }
+
+  const handleAddressClick = () => {
+    navigate("/addressPage");
+  }
+
+  const handlePaymentClick = () => {
+    navigate("/paymentpage")
+  }
+
   return (
     <div>
-      <div className={styles.container}>
-        <p className={styles.offer}>
-          🌟 Get 5% Off your first order,
-          <span className={styles.promo}>Promo: ORDER5</span>
-        </p>
-        <div className={styles.cartLocation}>
-          <p>
-            <HiLocationMarker className={styles.loc} /> Regent Street,{" "}
-            <span className={styles.a4}>A4</span>, A4201, London
-          </p>
-          <p className={styles.change}>Change Location</p>
-          <div className={styles.cartConatiner}>
-            <img src={cart} alt="cart" className={styles.cart} />
-            <span className={styles.cartText}> My Cart </span>
-            <div className={styles.separator}></div>
-            <div className={styles.arrow}>
-              <FaArrowCircleDown />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.navbar}>
-        <div className={styles.logo}>
-          <img src={logo} alt="logo" />
-        </div>
-        <div className={styles.menu}>
-          <a className={styles.home}>Home</a>
-          <a>Browse Menu</a>
-          <a>Special Offers</a>
-          <a>Restaurants</a>
-          <a>Track Order</a>
-        </div>
-        <div className={styles.loginSignup}>
-          <a>
-            <IoIosContact className={styles.contact} /> Login/Signup
-          </a>
-        </div>
-      </div>
+      <Navbar />
 
       <div className={styles.orderText}>
         <h1>
-          <FaArrowLeft className={styles.leftArrow} />
+          <FaArrowLeft className={styles.leftArrow} onClick={handleGoBack}/>
           Your Order Details
         </h1>
       </div>
@@ -110,18 +83,18 @@ export default function CheckoutPage() {
         </div>
 
         <div className={styles.rightSection}>
-        <div className={styles.deliveryAddress}>
-  <div className={styles.locationContainer}>
-    <img src={icon} alt="Location" className={styles.locationIcon} />
-    <div className={styles.textContainer}>
-      <h4>Delivery Address</h4>
-      <p>45, Green Street, Sector 12..</p>
-    </div>
-  </div>
-  <div className={styles.arrowForward}>
-    <IoIosArrowForward />
-  </div>
-</div>
+          <div className={styles.deliveryAddress} onClick={handleAddressClick}>
+            <div className={styles.locationContainer}>
+              <img src={icon} alt="Location" className={styles.locationIcon} />
+              <div className={styles.textContainer}>
+                <h4>Delivery Address</h4>
+                <p>45, Green Street, Sector 12..</p>
+              </div>
+            </div>
+            <div className={styles.arrowForward}>
+              <IoIosArrowForward />
+            </div>
+          </div>
 
           <div className={styles.thinLine}></div>
           <div className={styles.orderSummary}>
@@ -139,7 +112,7 @@ export default function CheckoutPage() {
               <span className={styles.rupee}>₹240</span>
             </div>
           </div>
-          <button className={styles.paymentButton}>
+          <button className={styles.paymentButton} onClick={handlePaymentClick}>
             Choose Payment Method
           </button>
         </div>

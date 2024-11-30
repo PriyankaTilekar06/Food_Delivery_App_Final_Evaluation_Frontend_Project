@@ -7,122 +7,7 @@ body {
   align-items: center;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  background: #fafafa;
-  border-radius: 0px 0px 12px 12px;
-  width: 1100px;
-  padding: 0px 0px 0px 40px;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  border: 1px solid #0000001a;
-}
-
-.promo {
-  color: #fc8a06;
-  text-decoration: underline;
-  font-weight: bold;
-}
-
-.cartLocation {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.a4 {
-  text-decoration: underline;
-}
-
-.change {
-  color: #fc8a06;
-  text-decoration: underline;
-  margin: 0px 70px 0px 20px;
-}
-
-.cartConatiner {
-  display: flex;
-  align-items: center;
-  background-color: #028643;
-  padding: 10px;
-  color: white;
-  border-radius: 0px 0px 5px 5px;
-  width: 200px;
-  height: 30px;
-}
-
-.cart {
-  width: 20px;
-  height: auto;
-  margin-right: 10px;
-}
-
-.cartText {
-  position: relative;
-  margin-right: 10px;
-  font-size: 12px;
-}
-
-.cartText::after {
-  content: "";
-  display: block;
-  width: 0.5px;
-  height: 50px;
-  background-color: white;
-  position: absolute;
-  right: -15px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.arrow {
-  margin-left: auto;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-}
-
-.navbar {
-  display: flex;
-  align-items: center;
-  margin-top: 30px;
-}
-
-.navbar .menu {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-.navbar .menu a {
-  text-decoration: none;
-  color: #000000;
-  margin: 0 15px;
-  font-size: 16px;
-  font-weight: bold;
-}
-.navbar .menu a.home {
-  background-color: #ff7f00;
-  color: #ffffff;
-  padding: 10px 35px;
-  border-radius: 20px;
-}
-.navbar .loginSignup {
-  background-color: #03081f;
-  color: #ffffff;
-  padding: 10px 35px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.contact {
-  color: #fc8a06;
-}
-
-.paymentContainer {
+/* .paymentContainer {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -232,4 +117,150 @@ body {
 
 .footer {
   margin-top: 70px;
+} */
+
+.payText{
+  margin-top: 50px;
+}
+
+
+.paymentContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.paymentMethods {
+  width: 60%;
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #FFE8CE;
+  border-radius: 100px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.paymentMethod:hover {
+  border-color: #ff7f00;
+}
+
+.paymentMethod input{
+  margin-left: 600px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  color: #ff7f00;
+  margin-right: 10px;
+}
+
+.details {
+  flex-grow: 1;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.balance {
+  font-size: 12px;
+  color: #999;
+}
+
+.arrow {
+  font-size: 16px;
+  color: #ff7f00;
+}
+
+.addCard {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.addCard:hover {
+  border-color: #ff7f00;
+}
+
+.addIcon {
+  font-size: 24px;
+  color: #ff7f00;
+  margin-right: 10px;
+}
+
+.paymentSummary {
+  width: 35%;
+  border: 1px solid #000;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  height: 10%;
+}
+
+.amount {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: lighter;
+  color: #83858A;
+}
+
+.amount span {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.proceedButton {
+  width: 100%;
+  background-color: #FC8A06;
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.proceedButton:hover {
+  background-color: #e66b00;
+}
+
+.divider {
+  border-top: 2px solid #240707;
+  margin: 10px 0;
+}
+
+.cardInput {
+  flex-grow: 1;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.addCardButton {
+  padding: 8px 12px;
+  background-color: #ff7f00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addCardButton:hover {
+  background-color: #e66b00;
 }

@@ -14,28 +14,48 @@ export default function Login() {
     password: "",
   });
 
+  // const loginUser = async (e) => {
+  //   e.preventDefault();
+  //   const { email, password } = data;
+  //   try {
+  //     const { data } = await axios.post("/login", {
+  //       email,
+  //       password,
+  //     });
+  //     if (data.error) {
+  //       toast.error(data.error);
+  //     } else {
+  //       setData({});
+  //       navigate("/homepage");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const loginUser = async (e) => {
     e.preventDefault();
     const { email, password } = data;
+  
     try {
-      const { data } = await axios.post("/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post("/login", { email, password });
+  
       if (data.error) {
         toast.error(data.error);
       } else {
+        localStorage.setItem("token", data.token)
         setData({});
+        toast.success("Login Successful!");
         navigate("/homepage");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Login Error:", error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
+  
 
   return (
     <div>
-      {/* <form onSubmit={loginUser}> */}
         <div className={styles.container}>
           <div className={styles.left}>
             <form onSubmit={loginUser}>
@@ -80,7 +100,6 @@ export default function Login() {
             <img src={image} alt="Decorative" className={styles.image} />
           </div>
         </div>
-      {/* </form> */}
       <Footer />
     </div>
   );

@@ -1,10 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios"
 import styles from "./ProductPage.module.css";
-import { HiLocationMarker } from "react-icons/hi";
-import { FaArrowCircleDown } from "react-icons/fa";
-import { IoIosContact } from "react-icons/io";
-import cart from "../../assets/cart.png";
-import logo from "../../assets/logo.png";
 import bg from "../../assets/bg.png";
 import burger from "../../assets/burger.png";
 import rating from "../../assets/rating.png";
@@ -14,9 +10,6 @@ import { IoIosSearch } from "react-icons/io";
 import vegan1 from "../../assets/vegan1.png";
 import vegan2 from "../../assets/vegan2.png";
 import vegan3 from "../../assets/vegan3.png";
-import fries1 from "../../assets/fries.png";
-import frenchfries from "../../assets/frenchfries.png";
-import coldDrinks from "../../assets/coldDrinks.png";
 import tracking from "../../assets/Tracking.png";
 import clock from "../../assets/Clock.png";
 import idVerified from "../../assets/ID_Verified.png";
@@ -26,15 +19,52 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import Restaurant from "../../components/Restaurants/Restaurant";
 import Footer from "../../components/Footer/Footer";
+import Cart from "../../components/Cart/Cart";
+import Navbar from "../../components/Navbar/Navbar";
 
 export default function ProductPage() {
+  const [products, setProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isCartVisible, setIsCartVisible] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
 
-  // Assuming reviews is an array of images
+  const handleAddToCart = () => {
+    setIsCartVisible(true);
+  }
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/products"); 
+        setProducts(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err, "Failed to fetch products");
+        setLoading(false);
+        console.log(err)
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const reviewImages = [reviews, reviews, reviews, reviews, reviews, reviews];
 
-  const showNext = () => {
+  const showNextReview = () => {
     if (currentIndex < reviewImages.length - 3) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const showPrevReview = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+  const showNext = () => {
+    if (currentIndex < products.length - 3) {
       setCurrentIndex(currentIndex + 1);
     }
   };
@@ -45,47 +75,42 @@ export default function ProductPage() {
     }
   };
 
+  if (loading) {
+    return <p>Loading products...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  // const handleAddToCart = (product) => {
+  //   const existingProduct = cart.find((item) => item.id === product.id);
+  //   if (existingProduct) {
+  //     setCart(
+  //       cart.map((item) =>
+  //         item.id === product.id
+  //           ? { ...item, quantity: item.quantity + 1 }
+  //           : item
+  //       )
+  //     );
+  //   } else {
+  //     setCart([...cart, { ...product, quantity: 1 }]);
+  //   }
+  //   setIsCartVisible(true);
+  // };
+
+  // // Toggle cart visibility
+  // const toggleCartVisibility = () => {
+  //   setIsCartVisible(!isCartVisible);
+  // }
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className={styles.products}>
-      <div className={styles.container}>
-        <p className={styles.offer}>
-          🌟 Get 5% Off your first order,
-          <span className={styles.promo}>Promo: ORDER5</span>
-        </p>
-        <div className={styles.cartLocation}>
-          <p>
-            <HiLocationMarker className={styles.loc} /> Regent Street,{" "}
-            <span className={styles.a4}>A4</span>, A4201, London
-          </p>
-          <p className={styles.change}>Change Location</p>
-          <div className={styles.cartConatiner}>
-            <img src={cart} alt="cart" className={styles.cart} />
-            <span className={styles.cartText}> My Cart </span>
-            <div className={styles.separator}></div>
-            <div className={styles.arrow}>
-              <FaArrowCircleDown />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.navbar}>
-        <div className={styles.logo}>
-          <img src={logo} alt="logo" />
-        </div>
-        <div className={styles.menu}>
-          <a className={styles.home}>Home</a>
-          <a>Browse Menu</a>
-          <a>Special Offers</a>
-          <a>Restaurants</a>
-          <a>Track Order</a>
-        </div>
-        <div className={styles.loginSignup}>
-          <a>
-            <IoIosContact className={styles.contact} /> Login/Signup
-          </a>
-        </div>
-      </div>
+      <Navbar />
 
       <div className={styles.heroModal}>
         <img src={bg} alt="background" className={styles.bg} />
@@ -111,7 +136,9 @@ export default function ProductPage() {
         <div className={styles.londonText}>
           <div className={styles.londonWrapper}>
             <IoIosSearch className={styles.searchIcon} />
-            <input placeholder="Search from menu..." />
+            <input placeholder="Search from menu..." 
+             value={searchQuery} // Controlled input
+             onChange={(e) => setSearchQuery(e.target.value)}/>
           </div>
         </div>
       </div>
@@ -129,180 +156,92 @@ export default function ProductPage() {
         <p>Orbit®</p>
       </div>
 
+      <div className={styles.containerCart}>
       <div className={styles.discountModal}>
         <img src={vegan1} alt="first order discount" />
         <img src={vegan2} alt="Vegan Discount" />
         <img src={vegan3} alt="free ice-cream offer" />
       </div>
 
-      <div className={styles.burgerText}>Burgers</div>
+      {isCartVisible && (
+      <div className={styles.productCart}>
+        <Cart />
+      </div>
+      )}
 
-      <div className={styles.gridContainer}>
+      <div className={styles.burgerText}>Burgers</div>
+      <div className={`${styles.gridContainer} ${
+          isCartVisible ? styles.gridShrink : ""
+        }`}>
         <div className={styles.grid}>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>The classics for 3</h3>
-              <p>
-                1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium-sized
-                French Fries, 3 cold drinks
-              </p>
-              <div className={styles.gridPrice}>₹ 120</div>
+          {products.map((product, index) => (
+          // {filteredProducts.map((product, index) => (
+            <div key={index} className={styles.gridModal}>
+              <div className={styles.gridContent}>
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+                <div className={styles.gridPrice}>₹ {product.price}</div>
+              </div>
+              <div className={styles.gridImage}>
+                <img
+                  src={product.image} 
+                  alt={product.title}
+                />
+                <button className={styles.gridAddButton} onClick={handleAddToCart}>+</button>
+              </div>
             </div>
-            <div className={styles.gridImage}>
-              <img src={fries1} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>The family delight</h3>
-              <p>
-                2 Big Macs™, 2 Cheeseburgers, 4 medium-sized French Fries, 4
-                cold drinks
-              </p>
-              <div className={styles.gridPrice}>₹ 250</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={fries1} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.girdContent}>
-              <h3>Snack time combo</h3>
-              <p>1 Cheeseburger, 1 medium-sized French Fries, 1 cold drink</p>
-              <div className={styles.gridPrice}>₹ 90</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={fries1} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>Party pack</h3>
-              <p>5 Big Macs™, 5 large-sized French Fries, 5 cold drinks</p>
-              <div className={styles.gridPrice}>₹ 600</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={fries1} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
+          ))}
         </div>
+      </div>
       </div>
 
       <div className={styles.friesText}>Fries</div>
-
-      <div className={styles.gridContainer}>
+      <div className={`${styles.gridContainer} ${
+          isCartVisible ? styles.gridShrink : ""
+        }`}>
         <div className={styles.grid}>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>The classics for 3</h3>
-              <p>
-                1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium-sized
-                French Fries, 3 cold drinks
-              </p>
-              <div className={styles.gridPrice}>₹ 120</div>
+          {products.map((product, index) => (
+          // {filteredProducts.map((product, index) => (
+            <div key={index} className={styles.gridModal}>
+              <div className={styles.gridContent}>
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+                <div className={styles.gridPrice}>₹ {product.price}</div>
+              </div>
+              <div className={styles.gridImage}>
+                <img
+                  src={product.image} 
+                  alt={product.title}
+                />
+                <button className={styles.gridAddButton}>+</button>
+              </div>
             </div>
-            <div className={styles.gridImage}>
-              <img src={frenchfries} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>The family delight</h3>
-              <p>
-                2 Big Macs™, 2 Cheeseburgers, 4 medium-sized French Fries, 4
-                cold drinks
-              </p>
-              <div className={styles.gridPrice}>₹ 250</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={frenchfries} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.girdContent}>
-              <h3>Snack time combo</h3>
-              <p>1 Cheeseburger, 1 medium-sized French Fries, 1 cold drink</p>
-              <div className={styles.gridPrice}>₹ 90</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={frenchfries} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>Party pack</h3>
-              <p>5 Big Macs™, 5 large-sized French Fries, 5 cold drinks</p>
-              <div className={styles.gridPrice}>₹ 600</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={frenchfries} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <div className={styles.friesText}>Cold Drinks</div>
-
-      <div className={styles.gridContainer}>
+      <div className={`${styles.gridContainer} ${
+          isCartVisible ? styles.gridShrink : ""
+        }`}>
         <div className={styles.grid}>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>The classics for 3</h3>
-              <p>
-                1 McChicken™, 1 Big Mac™, 1 Royal Cheeseburger, 3 medium-sized
-                French Fries, 3 cold drinks
-              </p>
-              <div className={styles.gridPrice}>₹ 120</div>
+          {products.map((product, index) => (
+          // {filteredProducts.map((product, index) => (
+            <div key={index} className={styles.gridModal}>
+              <div className={styles.gridContent}>
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+                <div className={styles.gridPrice}>₹ {product.price}</div>
+              </div>
+              <div className={styles.gridImage}>
+                <img
+                  src={product.image} 
+                  alt={product.title}
+                />
+                <button className={styles.gridAddButton}>+</button>
+              </div>
             </div>
-            <div className={styles.gridImage}>
-              <img src={coldDrinks} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>The family delight</h3>
-              <p>
-                2 Big Macs™, 2 Cheeseburgers, 4 medium-sized French Fries, 4
-                cold drinks
-              </p>
-              <div className={styles.gridPrice}>₹ 250</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={coldDrinks} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.girdContent}>
-              <h3>Snack time combo</h3>
-              <p>1 Cheeseburger, 1 medium-sized French Fries, 1 cold drink</p>
-              <div className={styles.gridPrice}>₹ 90</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={coldDrinks} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
-          <div className={styles.gridModal}>
-            <div className={styles.gridContent}>
-              <h3>Party pack</h3>
-              <p>5 Big Macs™, 5 large-sized French Fries, 5 cold drinks</p>
-              <div className={styles.gridPrice}>₹ 600</div>
-            </div>
-            <div className={styles.gridImage}>
-              <img src={coldDrinks} alt="Food Image" />
-              <button className={styles.gridAddButton}>+</button>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
@@ -429,3 +368,6 @@ export default function ProductPage() {
     </div>
   );
 }
+
+
+

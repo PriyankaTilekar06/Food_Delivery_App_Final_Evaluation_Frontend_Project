@@ -1,22 +1,39 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./AddressPage.module.css";
-import cart from "../../assets/cart.png";
-import logo from "../../assets/logo.png";
-import { HiLocationMarker } from "react-icons/hi";
-import { FaArrowCircleDown, FaArrowLeft } from "react-icons/fa";
-import { IoIosContact } from "react-icons/io";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { FaArrowLeft } from "react-icons/fa6";
 import Footer from "../../components/Footer/Footer";
+import Navbar from "../../components/Navbar/Navbar";
+import { UserContext } from "../../../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AddressPage() {
+  const { setSelectedAddress } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
+  const [editingIndex, setEditingIndex] = useState(null);
   const [newAddress, setNewAddress] = useState({
     state: "",
     city: "",
     pincode: "",
     phone: "",
     fullAddress: "",
-  });
+  })
+  const navigate = useNavigate()
+
+  const handleGoBack = () => {
+    navigate(-1);  // Navigate to the previous page
+  }
+
+  useEffect(() => {
+    const savedAddresses = JSON.parse(localStorage.getItem("addresses")) || [];
+    setAddresses(savedAddresses);
+  }, []);
+
+  const saveToLocalStorage = (updatedAddresses) => {
+    localStorage.setItem("addresses", JSON.stringify(updatedAddresses));
+  };
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -28,55 +45,52 @@ export default function AddressPage() {
   };
 
   const saveAddress = () => {
-    setAddresses([...addresses, newAddress]);
-    setNewAddress({ state: "", city: "", pincode: "", phone: "", fullAddress: "" });
+    let updatedAddresses;
+    if (editingIndex !== null) {
+      updatedAddresses = [...addresses];
+      updatedAddresses[editingIndex] = newAddress;
+    } else {
+      updatedAddresses = [...addresses, newAddress];
+    }
+    setAddresses(updatedAddresses);
+    saveToLocalStorage(updatedAddresses);
+    setEditingIndex(null);
+    setNewAddress({
+      state: "",
+      city: "",
+      pincode: "",
+      phone: "",
+      fullAddress: "",
+    });
     setIsPopupOpen(false);
+  };
+
+  const handleEdit = (index) => {
+    setEditingIndex(index);
+    setNewAddress(addresses[index]);
+    setIsPopupOpen(true);
+  };
+
+  const handleRemove = (index) => {
+    const updatedAddresses = addresses.filter((_, i) => i !== index);
+    setAddresses(updatedAddresses);
+    saveToLocalStorage(updatedAddresses);
+  };
+
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null);
+
+  const handleSetAsDefault = (index) => {
+    setSelectedAddressIndex(index);
+    setSelectedAddress(addresses[index]);
   };
 
   return (
     <div>
-      <div className={styles.container}>
-        <p className={styles.offer}>
-          🌟 Get 5% Off your first order, <span className={styles.promo}>Promo: ORDER5</span>
-        </p>
-        <div className={styles.cartLocation}>
-          <p>
-            <HiLocationMarker className={styles.loc} /> Regent Street,{" "}
-            <span className={styles.a4}>A4</span>, A4201, London
-          </p>
-          <p className={styles.change}>Change Location</p>
-          <div className={styles.cartConatiner}>
-            <img src={cart} alt="cart" className={styles.cart} />
-            <span className={styles.cartText}> My Cart </span>
-            <div className={styles.separator}></div>
-            <div className={styles.arrow}>
-              <FaArrowCircleDown />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.navbar}>
-        <div className={styles.logo}>
-          <img src={logo} alt="logo" />
-        </div>
-        <div className={styles.menu}>
-          <a className={styles.home}>Home</a>
-          <a>Browse Menu</a>
-          <a>Special Offers</a>
-          <a>Restaurants</a>
-          <a>Track Order</a>
-        </div>
-        <div className={styles.loginSignup}>
-          <a>
-            <IoIosContact className={styles.contact} /> Login/Signup
-          </a>
-        </div>
-      </div>
+      <Navbar />
 
       <div className={styles.yourAddress}>
         <h1>
-          <FaArrowLeft /> Your Address
+          <FaArrowLeft onClick={handleGoBack} /> Your Address
         </h1>
       </div>
 
@@ -85,24 +99,60 @@ export default function AddressPage() {
           <button>+</button>
           <p>Add Address</p>
         </div>
-        {/* Display Saved Addresses */}
-        <div className={styles.savedAddresses}>
+
+        <div className={styles.cardAddress}>
           {addresses.map((address, index) => (
-            <div key={index} className={styles.addressCard}>
-              <p>{address.state}, {address.city}</p>
-              <p>Pincode: {address.pincode}</p>
-              <p>Phone: {address.phone}</p>
-              <p>{address.fullAddress}</p>
+            <div
+              key={index}
+              className={`${styles.saveAddress} ${
+                selectedAddressIndex === index ? styles.selected : ""
+              }`}
+            >
+              <h3>
+                {user?.name || ""}
+                {index === selectedAddressIndex && (
+                  <span
+                    className={styles.defaultBadge}
+                    onClick={() => handleSetAsDefault(index)}
+                  >
+                    Default
+                  </span>
+                )}
+              </h3>
+
+              <p>
+                {address.fullAddress}
+                <br />
+                {address.city}, {address.pincode}, India
+              </p>
+              <p>{address.phone}</p>
+              <div className={styles.actions}>
+                <button
+                  className={styles.actionButton}
+                  onClick={() => handleEdit(index)}
+                >
+                  Edit
+                </button>
+                <div className={styles.divider}></div>
+                <button
+                  className={styles.actionButton}
+                  onClick={() => handleRemove(index)}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Add Address Popup */}
       {isPopupOpen && (
         <div className={styles.popup}>
           <div className={styles.popupContent}>
-            <h3>Add New Address</h3>
+            <h3>
+              <HiOutlineLocationMarker className={styles.loc} />
+              Add Address
+            </h3>
             <div className={styles.row}>
               <input
                 type="text"
@@ -146,11 +196,9 @@ export default function AddressPage() {
         </div>
       )}
 
-      {/* Footer */}
       <div className={styles.footer}>
         <Footer />
       </div>
     </div>
   );
 }
-
