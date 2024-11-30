@@ -37,12 +37,14 @@ export default function Login() {
     const { email, password } = data;
   
     try {
-      const { data } = await axios.post("/login", { email, password });
-  
+      const { data } = await axios.post("/auth/login", { email, password }, {withCredentials: true});
+      console.log(data)
       if (data.error) {
         toast.error(data.error);
       } else {
         localStorage.setItem("token", data.token)
+        localStorage.setItem("name", data.user.name)
+        localStorage.setItem("email", data.user.email)
         setData({});
         toast.success("Login Successful!");
         navigate("/homepage");

@@ -13,6 +13,7 @@ export default function Navbar() {
   const { user } = useContext(UserContext)
   const navigate = useNavigate();
   const [currentAddress, setCurrentAddress] = useState(null);
+  const userName = localStorage.getItem('name')
 
   useEffect(() => {
     const addresses = JSON.parse(localStorage.getItem("addresses")) || [];
@@ -73,8 +74,8 @@ export default function Navbar() {
           <a>Track Order</a>
         </div>
         <div className={styles.loginSignup} onClick={handleLoginSignupClick}>
-        {user ? (
-            <span className={styles.username}><IoIosContact className={styles.contact}/>Hey {user.name}</span> 
+        {userName ? (
+            <span className={styles.username}><IoIosContact className={styles.contact}/>Hey {userName}</span> 
           ) : (
             <a>
               <IoIosContact className={styles.contact} /> Login/Signup

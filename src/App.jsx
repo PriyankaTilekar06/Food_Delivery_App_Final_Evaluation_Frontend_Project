@@ -14,7 +14,7 @@ import Profile from "./pages/ProfilePage/Profile";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import OrderSucessull from "./pages/OrderSuccessfull/OrderSucessull";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://food-delivery-app-final-evaluation-backend-project.vercel.app";
 axios.defaults.withCredentials = true;
 
 function App() {

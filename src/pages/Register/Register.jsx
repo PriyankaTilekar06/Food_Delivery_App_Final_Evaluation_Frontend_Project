@@ -6,7 +6,6 @@ import styles from "./Register.module.css";
 import logo from "../../assets/logo.png";
 import image from "../../assets/img.png";
 import Footer from "../../components/Footer/Footer";
-import { UserContext } from "../../../context/userContext";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -22,12 +21,12 @@ export default function Register() {
     e.preventDefault()
     const { name, phone, email, password } = data;
     try {
-      const { data } = await axios.post("/register", {
+      const { data } = await axios.post("/auth/register", {
         name,
         phone,
         email,
         password,
-      });
+      }, {withCredentials: true});
       if (data.error) {
         toast.error(data.error);
       } else {

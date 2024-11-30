@@ -17,15 +17,15 @@ export function UserContextProvider({children}) {
     // }, [])
     useEffect(() => {
         if (!user) {
-            // axios.get('/profile')
-            axios.get('/profile', {
+            // axios.get('/auth/profile', {withCredentials: true} )
+            axios.get('/auth/profile', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
-            })
+            }, {withCredentials: true})
                 .then(({ data }) => {
                     console.log('Fetched User:', data);
-                    setUser(data); // Adjust based on response structure
+                    setUser(data); 
                 })
                 .catch((error) => {
                     console.error('Profile fetch error:', error.message);

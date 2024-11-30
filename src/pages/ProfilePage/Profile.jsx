@@ -18,17 +18,20 @@ export default function Profile() {
     cvc: "",
     name: "",
   });
+  const userName = localStorage.getItem('name')
+  const userEmail = localStorage.getItem('email')
   const [savedCards, setSavedCards] = useState([])
   const [profileData, setProfileData] = useState({
-    fullName: "",
-    email: "",
+    fullName: userName,
+    email: userEmail,
     gender: "",
     country: "",
-  });
+  })
+
   const navigate = useNavigate()
 
   const handleGoBack = () => {
-    navigate(-1);  // Navigate to the previous page
+    navigate(-1);  
   }
 
   const handleEditCardClick = () => {
@@ -100,7 +103,7 @@ export default function Profile() {
               alt="Profile Picture"
               className={styles.profileImage}
             />
-            <div className={styles.name}>{user?.name || ""}</div>
+            <div className={styles.name}>{userName}</div>
           </div>
           <button className={styles.editBtn} onClick={isEditing ? handleSaveProfileChanges : handleEditProfileClick}>
             {isEditing ? 'Save' : 'Edit'}
@@ -113,7 +116,8 @@ export default function Profile() {
             <input
               id="full-name"
               type="text"
-              value={user?.name || ""}
+              onChange={handleInputChange}
+              value={profileData.fullName}
               readOnly={!isEditing}
               className={styles.input}
             />
@@ -123,7 +127,8 @@ export default function Profile() {
             <input
               id="email"
               type="email"
-              value={user?.email || ""}
+              onChange={handleInputChange}
+              value={profileData.email}
               readOnly={!isEditing}
               className={styles.input}
             />
