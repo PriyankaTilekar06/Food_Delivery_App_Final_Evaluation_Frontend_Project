@@ -19,7 +19,8 @@ axios.defaults.withCredentials = true;
 
 function App() {
   return (
-    <UserContextProvider>
+    // <UserContextProvider>
+    <>
       <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -33,7 +34,9 @@ function App() {
         <Route path="/addresspage" element={<AddressPage />} />
         <Route path="/ordersuccesfull" element={<OrderSucessull />} />
       </Routes>
-    </UserContextProvider>
+      </>
+    // </UserContextProvider>
+    
   );
 }
 
