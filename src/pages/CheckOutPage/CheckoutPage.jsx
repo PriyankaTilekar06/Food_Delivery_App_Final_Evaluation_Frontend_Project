@@ -6,7 +6,7 @@ import items3 from "../../assets/items3.png";
 import Restaurant from "../../components/Restaurants/Restaurant";
 import Footer from "../../components/Footer/Footer";
 import { FaArrowLeft } from "react-icons/fa6";
-import icon from "../../assets/icon.png";
+import icon from "../../assets/Icon.png";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
