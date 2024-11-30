@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./CheckOutPage.module.css";
+import styles from "./CheckoutPage.module.css";
 import items1 from "../../assets/items1.png";
 import items2 from "../../assets/items2.png";
 import items3 from "../../assets/items3.png";
