@@ -21,7 +21,7 @@ function App() {
   return (
     // <UserContextProvider>
     <>
-      {/* <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
+      <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -33,8 +33,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/addresspage" element={<AddressPage />} />
         <Route path="/ordersuccesfull" element={<OrderSucessull />} />
-      </Routes> */}
-      Hello World
+      </Routes>
       </>
     // </UserContextProvider>
     
