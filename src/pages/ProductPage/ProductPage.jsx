@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"
+import axios from "axios";
 import styles from "./ProductPage.module.css";
 import bg from "../../assets/bg.png";
 import burger from "../../assets/burger.png";
@@ -27,23 +27,25 @@ export default function ProductPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isCartVisible, setIsCartVisible] = useState(false)
+  const [isCartVisible, setIsCartVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("")
+  const [cartItems, setCartItems] = useState([]);
+
 
   const handleAddToCart = () => {
     setIsCartVisible(true);
-  }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("/products"); 
+        const response = await axios.get("/products");
         setProducts(response.data);
         setLoading(false);
       } catch (err) {
         setError(err, "Failed to fetch products");
         setLoading(false);
-        console.log(err)
+        console.log(err);
       }
     };
 
@@ -106,7 +108,9 @@ export default function ProductPage() {
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
+
+
 
   return (
     <div className={styles.products}>
@@ -136,72 +140,82 @@ export default function ProductPage() {
         <div className={styles.londonText}>
           <div className={styles.londonWrapper}>
             <IoIosSearch className={styles.searchIcon} />
-            <input placeholder="Search from menu..." 
-             value={searchQuery} // Controlled input
-             onChange={(e) => setSearchQuery(e.target.value)}/>
+            <input
+              placeholder="Search from menu..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         </div>
       </div>
 
-      <div className={styles.orbitModal}>
-        <p className={styles.offer}>Offers</p>
-        <p>Burgers</p>
-        <p>Fries</p>
-        <p>Snacks</p>
-        <p>Cold drinks</p>
-        <p>Happy Meal®</p>
-        <p>Desserts</p>
-        <p>Hot drinks</p>
-        <p>Sauces</p>
-        <p>Orbit®</p>
-      </div>
+          <div className={styles.orbitModal}>
+            <p className={styles.offer}>Offers</p>
+            <p>Burgers</p>
+            <p>Fries</p>
+            <p>Snacks</p>
+            <p>Cold drinks</p>
+            <p>Happy Meal®</p>
+            <p>Desserts</p>
+            <p>Hot drinks</p>
+            <p>Sauces</p>
+            <p>Orbit®</p>
+          </div>
 
-      <div className={styles.containerCart}>
-      <div className={styles.discountModal}>
-        <img src={vegan1} alt="first order discount" />
-        <img src={vegan2} alt="Vegan Discount" />
-        <img src={vegan3} alt="free ice-cream offer" />
-      </div>
+          {isCartVisible && (
+            <div className={styles.productCart}>
+              <Cart />
+              {/* {cartItems.map(item => <Cart key={item.id} {...item} />)} */}
 
-      {isCartVisible && (
-      <div className={styles.productCart}>
-        <Cart />
-      </div>
-      )}
-
-      <div className={styles.burgerText}>Burgers</div>
-      <div className={`${styles.gridContainer} ${
-          isCartVisible ? styles.gridShrink : ""
-        }`}>
-        <div className={styles.grid}>
-          {products.map((product, index) => (
-          // {filteredProducts.map((product, index) => (
-            <div key={index} className={styles.gridModal}>
-              <div className={styles.gridContent}>
-                <h3>{product.title}</h3>
-                <p>{product.description}</p>
-                <div className={styles.gridPrice}>₹ {product.price}</div>
-              </div>
-              <div className={styles.gridImage}>
-                <img
-                  src={product.image} 
-                  alt={product.title}
-                />
-                <button className={styles.gridAddButton} onClick={handleAddToCart}>+</button>
-              </div>
             </div>
-          ))}
+          )}
+
+          <div className={styles.containerCart}>
+            <div className={styles.discountModal}>
+              <img src={vegan1} alt="first order discount" />
+              <img src={vegan2} alt="Vegan Discount" />
+              <img src={vegan3} alt="free ice-cream offer" />
+            </div>
+
+        <div className={styles.burgerText}>Burgers</div>
+        <div
+          className={`${styles.gridContainer} ${
+            isCartVisible ? styles.gridShrink : ""
+          }`}
+        >
+          <div className={styles.grid}>
+            {products.map((product, index) => (
+              // {filteredProducts.map((product, index) => (
+              <div key={index} className={styles.gridModal}>
+                <div className={styles.gridContent}>
+                  <h3>{product.title}</h3>
+                  <p>{product.description}</p>
+                  <div className={styles.gridPrice}>₹ {product.price}</div>
+                </div>
+                <div className={styles.gridImage}>
+                  <img src={product.image} alt={product.title} />
+                  <button
+                    className={styles.gridAddButton}
+                    onClick={handleAddToCart}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       </div>
 
       <div className={styles.friesText}>Fries</div>
-      <div className={`${styles.gridContainer} ${
+      <div
+        className={`${styles.gridContainer} ${
           isCartVisible ? styles.gridShrink : ""
-        }`}>
+        }`}
+      >
         <div className={styles.grid}>
           {products.map((product, index) => (
-          // {filteredProducts.map((product, index) => (
+            // {filteredProducts.map((product, index) => (
             <div key={index} className={styles.gridModal}>
               <div className={styles.gridContent}>
                 <h3>{product.title}</h3>
@@ -209,10 +223,7 @@ export default function ProductPage() {
                 <div className={styles.gridPrice}>₹ {product.price}</div>
               </div>
               <div className={styles.gridImage}>
-                <img
-                  src={product.image} 
-                  alt={product.title}
-                />
+                <img src={product.image} alt={product.title} />
                 <button className={styles.gridAddButton}>+</button>
               </div>
             </div>
@@ -221,12 +232,14 @@ export default function ProductPage() {
       </div>
 
       <div className={styles.friesText}>Cold Drinks</div>
-      <div className={`${styles.gridContainer} ${
+      <div
+        className={`${styles.gridContainer} ${
           isCartVisible ? styles.gridShrink : ""
-        }`}>
+        }`}
+      >
         <div className={styles.grid}>
           {products.map((product, index) => (
-          // {filteredProducts.map((product, index) => (
+            // {filteredProducts.map((product, index) => (
             <div key={index} className={styles.gridModal}>
               <div className={styles.gridContent}>
                 <h3>{product.title}</h3>
@@ -234,10 +247,7 @@ export default function ProductPage() {
                 <div className={styles.gridPrice}>₹ {product.price}</div>
               </div>
               <div className={styles.gridImage}>
-                <img
-                  src={product.image} 
-                  alt={product.title}
-                />
+                <img src={product.image} alt={product.title} />
                 <button className={styles.gridAddButton}>+</button>
               </div>
             </div>
@@ -368,6 +378,3 @@ export default function ProductPage() {
     </div>
   );
 }
-
-
-

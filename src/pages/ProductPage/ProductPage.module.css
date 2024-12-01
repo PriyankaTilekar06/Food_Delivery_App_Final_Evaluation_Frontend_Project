@@ -154,8 +154,11 @@ input {
 }
 
 .discountModal {
-  display: flex;
-  flex-direction: row;
+  /* display: flex;
+  flex-direction: row; */
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  gap: 20px;
   justify-content: space-evenly;
   align-items: center;
   margin-top: 70px;
@@ -181,12 +184,15 @@ input {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); */
+  grid-template-columns: auto auto auto;
   gap: 16px;
   padding: 16px;
   max-width: 1200px;
   margin: auto;
 }
+
+
 
  /* Grid Container */
 /* .gridContainer {
