@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Home from "./pages/Home";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import axios from "axios";
@@ -14,8 +13,8 @@ import Profile from "./pages/ProfilePage/Profile";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import OrderSucessull from "./pages/OrderSuccessfull/OrderSucessull";
 
-axios.defaults.baseURL = "https://food-delivery-app-final-evaluation-backend-project.vercel.app";
-axios.defaults.withCredentials = true;
+// axios.defaults.baseURL = "https://food-delivery-app-final-evaluation-backend-project.vercel.app";
+// axios.defaults.withCredentials = true;
 
 function App() {
   return (

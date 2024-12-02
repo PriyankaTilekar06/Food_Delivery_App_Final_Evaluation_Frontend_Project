@@ -41,7 +41,7 @@ export default function Login() {
     const { email, password } = data;
   
     try {
-      const { data } = await axios.post("/auth/login", { email, password }, {withCredentials: true});
+      const { data } = await axios.post("https://food-delivery-app-final-evaluation-backend-project.vercel.app/auth/login", { email, password }, {withCredentials: true});
       console.log(data)
       if (data.error) {
         toast.error(data.error);
