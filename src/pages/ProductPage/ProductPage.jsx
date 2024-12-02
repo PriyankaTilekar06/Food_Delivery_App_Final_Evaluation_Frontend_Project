@@ -28,9 +28,8 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState([]);
-
 
   const handleAddToCart = () => {
     setIsCartVisible(true);
@@ -106,11 +105,6 @@ export default function ProductPage() {
   //   setIsCartVisible(!isCartVisible);
   // }
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-
 
   return (
     <div className={styles.products}>
@@ -149,43 +143,56 @@ export default function ProductPage() {
         </div>
       </div>
 
-          <div className={styles.orbitModal}>
-            <p className={styles.offer}>Offers</p>
-            <p>Burgers</p>
-            <p>Fries</p>
-            <p>Snacks</p>
-            <p>Cold drinks</p>
-            <p>Happy Meal®</p>
-            <p>Desserts</p>
-            <p>Hot drinks</p>
-            <p>Sauces</p>
-            <p>Orbit®</p>
-          </div>
+      <div className={styles.orbitModal}>
+        <p className={styles.offer}>Offers</p>
+        <p>Burgers</p>
+        <p>Fries</p>
+        <p>Snacks</p>
+        <p>Cold drinks</p>
+        <p>Happy Meal®</p>
+        <p>Desserts</p>
+        <p>Hot drinks</p>
+        <p>Sauces</p>
+        <p>Orbit®</p>
 
-          {isCartVisible && (
+        {isCartVisible && (
+          <div className={styles.productCart}>
+            <Cart />
+            {/* {cartItems.map(item => <Cart key={item.id} {...item} />)} */}
+          </div>
+        )}
+        
+      </div>
+
+      {/* {isCartVisible && (
             <div className={styles.productCart}>
               <Cart />
-              {/* {cartItems.map(item => <Cart key={item.id} {...item} />)} */}
 
             </div>
-          )}
+          )} */}
 
-          <div className={styles.containerCart}>
-            <div className={styles.discountModal}>
-              <img src={vegan1} alt="first order discount" />
-              <img src={vegan2} alt="Vegan Discount" />
-              <img src={vegan3} alt="free ice-cream offer" />
-            </div>
+      <div className={styles.containerCart}>
+        <div className={styles.discountModal} style={{
+          display: 'grid',
+          gridTemplateColumns: isCartVisible ? '450px 450px' : 'repeat(auto-fit, minmax(350px, 1fr))',
+          gap: '50px',
+        }}>
+          <img src={vegan1} alt="first order discount" />
+          <img src={vegan2} alt="Vegan Discount" />
+          <img src={vegan3} alt="free ice-cream offer" />
+        </div>
 
         <div className={styles.burgerText}>Burgers</div>
         <div
-          className={`${styles.gridContainer} ${
-            isCartVisible ? styles.gridShrink : ""
-          }`}
+          // className={`${styles.gridContainer} ${
+          //   isCartVisible ? styles.gridShrink : ""
+          // }`}
         >
-          <div className={styles.grid}>
+          <div className={styles.grid} style={{
+          display: 'grid',
+          gridTemplateColumns: isCartVisible ? '400px 400px' : 'auto auto auto',
+        }}>
             {products.map((product, index) => (
-              // {filteredProducts.map((product, index) => (
               <div key={index} className={styles.gridModal}>
                 <div className={styles.gridContent}>
                   <h3>{product.title}</h3>
@@ -215,7 +222,6 @@ export default function ProductPage() {
       >
         <div className={styles.grid}>
           {products.map((product, index) => (
-            // {filteredProducts.map((product, index) => (
             <div key={index} className={styles.gridModal}>
               <div className={styles.gridContent}>
                 <h3>{product.title}</h3>
@@ -224,7 +230,7 @@ export default function ProductPage() {
               </div>
               <div className={styles.gridImage}>
                 <img src={product.image} alt={product.title} />
-                <button className={styles.gridAddButton}>+</button>
+                <button className={styles.gridAddButton} onClick={handleAddToCart}>+</button>
               </div>
             </div>
           ))}
@@ -239,7 +245,6 @@ export default function ProductPage() {
       >
         <div className={styles.grid}>
           {products.map((product, index) => (
-            // {filteredProducts.map((product, index) => (
             <div key={index} className={styles.gridModal}>
               <div className={styles.gridContent}>
                 <h3>{product.title}</h3>
@@ -248,7 +253,7 @@ export default function ProductPage() {
               </div>
               <div className={styles.gridImage}>
                 <img src={product.image} alt={product.title} />
-                <button className={styles.gridAddButton}>+</button>
+                <button className={styles.gridAddButton} onClick={handleAddToCart}>+</button>
               </div>
             </div>
           ))}

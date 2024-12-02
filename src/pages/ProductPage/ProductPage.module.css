@@ -158,14 +158,14 @@ input {
   flex-direction: row; */
   display: inline-grid;
   grid-template-columns: auto auto auto;
-  gap: 20px;
-  justify-content: space-evenly;
-  align-items: center;
+  /* gap: 20px; */
+  /* justify-content: space-evenly; */
+  /* align-items: center; */
   margin-top: 70px;
 }
 
 .discountModal img {
-  width: 390px;
+  width: 400px;
 }
 
 .burgerText {
@@ -177,8 +177,8 @@ input {
 
 .gridContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   margin-top: 30px;
 }
 
@@ -190,6 +190,11 @@ input {
   padding: 16px;
   max-width: 1200px;
   margin: auto;
+}
+
+
+.productCart {
+  margin-top: 1100px;
 }
 
 
@@ -558,3 +563,6 @@ a {
 .gridAddButton:hover {
   background-color: #0056b3;
 } */
+
+
+

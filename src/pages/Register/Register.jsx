@@ -15,6 +15,10 @@ export default function Register() {
     email: "",
     password: "",
   })
+
+  const handleSignIn = () => {
+    navigate('/login')
+  }
   
 
   const registerUser = async (e) => {
@@ -86,8 +90,8 @@ export default function Register() {
               </button>
             </div>
 
-            <div className={styles.signIn}>
-              Don't you have an account? <a href="#">Sign In</a>
+            <div className={styles.signIn} onClick={handleSignIn}>
+              Don't you have an account? <a>Sign In</a>
             </div>
           </form>
         </div>

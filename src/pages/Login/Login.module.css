@@ -99,6 +99,7 @@ body{
 .signUp a {
   color: #FC8A06;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .signUp a:hover {

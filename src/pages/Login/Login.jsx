@@ -12,7 +12,11 @@ export default function Login() {
   const [data, setData] = useState({
     email: "",
     password: "",
-  });
+  })
+
+  const handleSignUp = () => {
+    navigate('/register')
+  }
 
   // const loginUser = async (e) => {
   //   e.preventDefault();
@@ -93,8 +97,8 @@ export default function Login() {
               <button className={styles.signInBtn} type="submit">
                 Sign in
               </button>
-              <div className={styles.signUp}>
-                Don't you have an account? <a href="#">Sign up</a>
+              <div className={styles.signUp} onClick={handleSignUp}>
+                Don't you have an account? <a>Sign up</a>
               </div>
             </form>
           </div>

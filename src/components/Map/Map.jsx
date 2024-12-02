@@ -1,10 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import "./Map.module.css"; // CSS for custom styling
+import "./Map.module.css";
 
 const CustomMap = () => {
   return (
-    <div style={{ width: "100%", maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ width: "100%", maxWidth: "1200px", margin: "0 auto" }}>
       <MapContainer
         center={[51.505, -0.09]}
         zoom={13}
@@ -15,6 +15,8 @@ const CustomMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        
+        {/* McDonald's Marker */}
         <Marker position={[51.505, -0.09]}>
           <Popup>
             <div className="custom-popup">
@@ -35,6 +37,29 @@ const CustomMap = () => {
             </div>
           </Popup>
         </Marker>
+
+        {/* Burger King Marker */}
+        <Marker position={[51.515, -0.1]}>
+          <Popup>
+            <div className="custom-popup">
+              <h2>Burger King</h2>
+              <p>
+                <strong>Central London</strong>
+              </p>
+              <p>Victoria St, London, SW1E 5ND, United Kingdom</p>
+              <p>
+                <strong>Phone number:</strong> +934555-21
+              </p>
+              <p>
+                <strong>Website:</strong>{" "}
+                <a href="http://burgerking.uk/" target="_blank" rel="noreferrer">
+                  http://burgerking.uk/
+                </a>
+              </p>
+            </div>
+          </Popup>
+        </Marker>
+
       </MapContainer>
     </div>
   );
