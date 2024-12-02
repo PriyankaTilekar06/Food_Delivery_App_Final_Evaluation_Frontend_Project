@@ -12,6 +12,7 @@ import PaymentPage from "./pages/PaymentPage/PaymentPage";
 import Profile from "./pages/ProfilePage/Profile";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import OrderSucessull from "./pages/OrderSuccessfull/OrderSucessull";
+import PrivateRoute from "./components/PrivateAuth";
 
 axios.defaults.baseURL = "https://food-delivery-app-final-evaluation-backend-project.vercel.app";
 axios.defaults.withCredentials = true;
@@ -25,13 +26,13 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/homepage" element={<HomePage />} />
-        <Route path="/productpage" element={<ProductPage />} />
-        <Route path="/checkoutpage" element={<CheckoutPage />} />
-        <Route path="/paymentpage" element={<PaymentPage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/addresspage" element={<AddressPage />} />
-        <Route path="/ordersuccesfull" element={<OrderSucessull />} />
+        <Route path="/homepage" exact element={<PrivateRoute><HomePage /></PrivateRoute>} />
+        <Route path="/productpage" exact element={<PrivateRoute><ProductPage /></PrivateRoute>} />
+        <Route path="/checkoutpage" exact element={<PrivateRoute><CheckoutPage /></PrivateRoute>} />
+        <Route path="/paymentpage" exact element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
+        <Route path="/profile" exact element={<PrivateRoute><Profile /></PrivateRoute>} />
+        <Route path="/addresspage" exact element={<PrivateRoute><AddressPage /></PrivateRoute>} />
+        <Route path="/ordersuccesfull" exact element={<PrivateRoute><OrderSucessull /></PrivateRoute>} />
       </Routes>
       </>
     // </UserContextProvider>
