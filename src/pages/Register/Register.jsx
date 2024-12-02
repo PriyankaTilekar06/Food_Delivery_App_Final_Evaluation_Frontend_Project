@@ -25,7 +25,7 @@ export default function Register() {
     e.preventDefault()
     const { name, phone, email, password } = data;
     try {
-      const { data } = await axios.post("https://food-delivery-app-final-evaluation-backend-project.vercel.app/auth/register", {
+      const { data } = await axios.post("/auth/register", {
         name,
         phone,
         email,
