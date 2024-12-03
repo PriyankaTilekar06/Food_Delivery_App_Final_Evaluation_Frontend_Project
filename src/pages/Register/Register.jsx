@@ -14,23 +14,26 @@ export default function Register() {
     phone: "",
     email: "",
     password: "",
-  })
+  });
 
   const handleSignIn = () => {
-    navigate('/login')
-  }
-  
+    navigate("/login");
+  };
 
   const registerUser = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const { name, phone, email, password } = data;
     try {
-      const { data } = await axios.post("/auth/register", {
-        name,
-        phone,
-        email,
-        password,
-      }, {withCredentials: true});
+      const { data } = await axios.post(
+        "/auth/register",
+        {
+          name,
+          phone,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       if (data.error) {
         toast.error(data.error);
       } else {
@@ -102,16 +105,4 @@ export default function Register() {
       <Footer />
     </div>
   );
-}
-
-{
-  /* <form onSubmit={registerUser}>
-        <label>Name</label>
-        <input type="text" placeholder="Enter your name" value={data.name} onChange={(e) => setData({...data, name: e.target.value})} />
-        <label>Email</label>
-        <input type="email" placeholder="Example@email.com" value={data.email} onChange={(e) => setData({...data, email: e.target.value})} />
-        <label>Password</label>
-        <input type="password" placeholder="At least 8 characters" value={data.password} onChange={(e) => setData({...data, password: e.target.value})} />
-        <button type="submit">Sign up</button>
-      </form> */
 }

@@ -19,12 +19,12 @@ export default function AddressPage() {
     pincode: "",
     phone: "",
     fullAddress: "",
-  })
-  const navigate = useNavigate()
+  });
+  const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);  // Navigate to the previous page
-  }
+    navigate(-1);
+  };
 
   useEffect(() => {
     const savedAddresses = JSON.parse(localStorage.getItem("addresses")) || [];

@@ -15,8 +15,7 @@ const CustomMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
-        {/* McDonald's Marker */}
+
         <Marker position={[51.505, -0.09]}>
           <Popup>
             <div className="custom-popup">
@@ -38,7 +37,6 @@ const CustomMap = () => {
           </Popup>
         </Marker>
 
-        {/* Burger King Marker */}
         <Marker position={[51.515, -0.1]}>
           <Popup>
             <div className="custom-popup">
@@ -52,14 +50,17 @@ const CustomMap = () => {
               </p>
               <p>
                 <strong>Website:</strong>{" "}
-                <a href="http://burgerking.uk/" target="_blank" rel="noreferrer">
+                <a
+                  href="http://burgerking.uk/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   http://burgerking.uk/
                 </a>
               </p>
             </div>
           </Popup>
         </Marker>
-
       </MapContainer>
     </div>
   );

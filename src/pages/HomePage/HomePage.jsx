@@ -23,10 +23,8 @@ import order1 from "../../assets/order1.png";
 import order2 from "../../assets/order2.png";
 import order3 from "../../assets/order3.png";
 import Footer from "../../components/Footer/Footer";
-import { useNavigate } from "react-router-dom";
 import Restaurant from "../../components/Restaurants/Restaurant";
 import Navbar from "../../components/Navbar/Navbar";
-import ban from "../../assets/ban.png";
 
 export default function HomePage() {
   return (
@@ -164,34 +162,25 @@ export default function HomePage() {
         <div className={styles.popular}>Popular Restaurants</div>
 
         <Restaurant />
-
-        {/* <div className={styles.banner}>
-        <img src={friends} alt="friends" className={styles.frnd} />
-        <img src={logo} alt="logo" className={styles.bannerLogo} />
-        <span>ing is more</span>
-        <p>Personalised & instant</p>
-        <p>Download the Order.uk app for faster ordering</p>
-        <img src={apps} alt="app" className={styles.bannerApp} />
-      </div> */}
         <div className={styles.banner}>
           <div className={styles.leftSection}>
             <img src={friends} alt="Friends" className={styles.friendsImage} />
           </div>
           <div className={styles.centerSection}>
             <img src={logo} alt="Logo" className={styles.logoImage} />
-            <span className={styles.orderingText}>Ordering is more</span>
-            <p className={styles.personalisedText}>Personalised & Instant</p>
+            <span className={styles.orderingText}>ing is more</span>
+            <p className={styles.personalisedText}>
+              <span>Personalised</span> & Instant
+            </p>
             <p className={styles.downloadText}>
               Download the Order.uk app for faster ordering
             </p>
-          </div>
-          <div className={styles.rightSection}>
-            <img src={apps} alt="App Store" className={styles.appsImage} />
+
+            <div className={styles.rightSection}>
+              <img src={apps} alt="App Store" className={styles.appsImage} />
+            </div>
           </div>
         </div>
-        {/* <div className={styles.banner}>
-      <img src={ban}/>
-    </div> */}
 
         <div className={styles.delivery}>
           <img src={delivery1} alt="delivery" />

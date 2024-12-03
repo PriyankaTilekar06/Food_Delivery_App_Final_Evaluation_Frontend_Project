@@ -14,9 +14,7 @@
 }
 
 @media (max-width: 768px) {
-  .restro{
-    /* overflow-x: scroll;
-    overflow-y: hidden; */
+  .restro {
     display: grid;
     grid-template-columns: auto auto;
   }

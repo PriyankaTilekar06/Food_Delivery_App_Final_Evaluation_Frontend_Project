@@ -4,57 +4,61 @@ import profilePhoto from "../../assets/profilePhoto.png";
 import { FaArrowLeft } from "react-icons/fa6";
 import Footer from "../../components/Footer/Footer";
 import { FaCreditCard } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
 import Navbar from "../../components/Navbar/Navbar";
 import { UserContext } from "../../../context/userContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const [showEditPopup, setShowEditPopup] = useState(false)
-  const { user } = useContext(UserContext)
-  const [isEditing, setIsEditing] = useState(false)
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const { user } = useContext(UserContext);
+  const [isEditing, setIsEditing] = useState(false);
   const [cardDetails, setCardDetails] = useState({
     cardNumber: "",
     expiration: "",
     cvc: "",
     name: "",
   });
-  const userName = localStorage.getItem('name')
-  const userEmail = localStorage.getItem('email')
-  const [savedCards, setSavedCards] = useState([])
+  const userName = localStorage.getItem("name");
+  const userEmail = localStorage.getItem("email");
+  const [savedCards, setSavedCards] = useState([]);
   const [profileData, setProfileData] = useState({
     fullName: userName,
     email: userEmail,
     gender: "",
     country: "",
-  })
+  });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);  
-  }
-
-  const handleEditCardClick = () => {
-    setShowEditPopup(true);
+    navigate(-1);
   };
-
   const handleClosePopup = () => {
     setShowEditPopup(false);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProfileData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    if (showEditPopup) {
+      setCardDetails((prevDetails) => ({
+        ...prevDetails,
+        [name]: value,
+      }));
+    } else {
+      setProfileData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleEditProfileClick = () => {
     if (isEditing) {
       console.log("Profile data saved:", profileData);
     }
-    setIsEditing(!isEditing); 
+    setIsEditing(!isEditing);
   };
 
   const handleRemove = () => {
@@ -68,9 +72,20 @@ export default function Profile() {
 
   const handleSaveChanges = () => {
     if (cardDetails.cardNumber.length === 16) {
-      setSavedCards((prevCards) => [...prevCards, cardDetails]);
-      handleClosePopup(); 
-      handleRemove(); 
+      setSavedCards((prevCards) => {
+        const updatedCards = [...prevCards];
+        const editingIndex = updatedCards.findIndex(
+          (card) => card.cardNumber === cardDetails.cardNumber
+        );
+        if (editingIndex !== -1) {
+          updatedCards[editingIndex] = cardDetails;
+        } else {
+          updatedCards.push(cardDetails);
+        }
+        return updatedCards;
+      });
+      handleClosePopup();
+      handleRemove();
     } else {
       alert("Card number must be 16 digits.");
     }
@@ -78,10 +93,16 @@ export default function Profile() {
 
   const maskCardNumber = (cardNumber) => {
     return "xxxx-xxxx-xxxx-" + cardNumber.slice(-4);
-  }
+  };
 
   const handleSaveProfileChanges = () => {
-    setIsEditing(false)
+    setIsEditing(false);
+  };
+
+  const handleEditCardClick = (index) => {
+    const selectedCard = savedCards[index];
+    setCardDetails(selectedCard);
+    setShowEditPopup(true);
   };
 
   return (
@@ -90,7 +111,7 @@ export default function Profile() {
 
       <div className={styles.profileText}>
         <h1>
-          <FaArrowLeft onClick={handleGoBack}/>
+          <FaArrowLeft onClick={handleGoBack} />
           My Profile
         </h1>
       </div>
@@ -105,8 +126,13 @@ export default function Profile() {
             />
             <div className={styles.name}>{userName}</div>
           </div>
-          <button className={styles.editBtn} onClick={isEditing ? handleSaveProfileChanges : handleEditProfileClick}>
-            {isEditing ? 'Save' : 'Edit'}
+          <button
+            className={styles.editBtn}
+            onClick={
+              isEditing ? handleSaveProfileChanges : handleEditProfileClick
+            }
+          >
+            {isEditing ? "Save" : "Edit"}
           </button>
         </div>
 
@@ -116,6 +142,7 @@ export default function Profile() {
             <input
               id="full-name"
               type="text"
+              name="fullName"
               onChange={handleInputChange}
               value={profileData.fullName}
               readOnly={!isEditing}
@@ -127,6 +154,7 @@ export default function Profile() {
             <input
               id="email"
               type="email"
+              name="email"
               onChange={handleInputChange}
               value={profileData.email}
               readOnly={!isEditing}
@@ -170,8 +198,14 @@ export default function Profile() {
                 <div className={styles.cardDetails}>
                   <FaCreditCard className={styles.cardIcon} />
                   <div>
-                    <span>{maskCardNumber(card.cardNumber)}</span>
-                    <span>{card.name}</span>
+                    <span> {maskCardNumber(card.cardNumber)}</span>
+                    <span>{card.name} </span>
+                    <div
+                      className={styles.pen}
+                      onClick={() => handleEditCardClick(index)}
+                    >
+                      <FaPen />
+                    </div>
                   </div>
                 </div>
               </div>

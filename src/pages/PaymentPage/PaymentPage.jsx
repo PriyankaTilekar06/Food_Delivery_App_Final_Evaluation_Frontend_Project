@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import styles from "./PaymentPage.module.css";
+import { toast } from "react-hot-toast";
 import Footer from "../../components/Footer/Footer";
 import { FaArrowLeft } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FaWallet,
   FaCreditCard,
@@ -16,29 +17,40 @@ export default function PaymentPage() {
   const [showCardInput, setShowCardInput] = useState(false);
   const [cardInput, setCardInput] = useState("");
   const [cards, setCards] = useState(["MaestroKard", "Paypal", "Stripe"]);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const location = useLocation();
+  const totalSubtotal = location.state?.totalSubtotal || 0;
 
   const handleGoBack = () => {
-    navigate(-1);  // Navigate to the previous page
-  }
+    navigate(-1);
+  };
 
   const handleProceedPayment = () => {
-    navigate("/ordersuccesfull");
+    if (selectedCard) {
+      navigate("/ordersuccesfull");
+    } else {
+      toast.error("Please choose a payment method.");
+    }
   };
 
   const handleAddCardClick = () => {
-    setShowCardInput(true); // Show the input field
+    setShowCardInput(true);
   };
 
   const handleCardInputChange = (e) => {
-    setCardInput(e.target.value); // Update card input state
+    setCardInput(e.target.value);
   };
 
   const handleAddCard = () => {
     if (cardInput.trim()) {
-      setCards([...cards, cardInput]); // Add new card to the list
-      setCardInput(""); // Clear input field
-      setShowCardInput(false); // Hide the input field
+      setCards([...cards, cardInput]);
+      setCardInput("");
+      setShowCardInput(false);
     }
+  };
+
+  const handleCardSelect = (card) => {
+    setSelectedCard(card);
   };
 
   return (
@@ -47,7 +59,7 @@ export default function PaymentPage() {
 
       <div className={styles.payText}>
         <h1>
-          <FaArrowLeft  onClick={handleGoBack}/>
+          <FaArrowLeft onClick={handleGoBack} />
           Choose and Pay
         </h1>
       </div>
@@ -70,14 +82,26 @@ export default function PaymentPage() {
           <div className={styles.divider}></div>
 
           {cards.map((card, index) => (
-            <div className={styles.paymentMethod} key={index}>
+            <div
+              className={styles.paymentMethod}
+              key={index}
+              onClick={() => handleCardSelect(card)}
+              style={{
+                border: selectedCard === card ? "2px solid #000" : "none",
+              }}
+            >
               <div className={styles.icon}>
                 <FaCreditCard />
               </div>
               <div className={styles.details}>
                 <div className={styles.title}>{card}</div>
               </div>
-              <input type="radio" name="payment-method" />
+              <input
+                type="radio"
+                name="payment-method"
+                checked={selectedCard === card}
+                onChange={() => handleCardSelect(card)}
+              />
             </div>
           ))}
 
@@ -104,7 +128,7 @@ export default function PaymentPage() {
 
         <div className={styles.paymentSummary}>
           <div className={styles.amount}>
-            Amount to be payed <span>₹240</span>
+            Amount to be payed <span>₹{totalSubtotal}</span>
           </div>
           <div className={styles.divider}></div>
           <button

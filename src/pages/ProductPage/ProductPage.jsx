@@ -4,8 +4,6 @@ import styles from "./ProductPage.module.css";
 import bg from "../../assets/bg.png";
 import burger from "../../assets/burger.png";
 import rating from "../../assets/rating.png";
-import { GoChecklist } from "react-icons/go";
-import { IoBicycle } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import vegan1 from "../../assets/vegan1.png";
 import vegan2 from "../../assets/vegan2.png";
@@ -15,12 +13,20 @@ import clock from "../../assets/Clock.png";
 import idVerified from "../../assets/ID_Verified.png";
 import CustomMap from "../../components/Map/Map";
 import reviews from "../../assets/reviews.png";
+import { FaMotorcycle } from "react-icons/fa6";
+import { GoChecklist } from "react-icons/go";
+import { BsClockFill } from "react-icons/bs";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import Restaurant from "../../components/Restaurants/Restaurant";
 import Footer from "../../components/Footer/Footer";
 import Cart from "../../components/Cart/Cart";
-import Navbar from "../../components/Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
+import { HiLocationMarker } from "react-icons/hi";
+import cart from "../../assets/cart.png";
+import { FaArrowCircleDown } from "react-icons/fa";
+import logo from "../../assets/logo.png";
+import { IoIosContact } from "react-icons/io";
 
 export default function ProductPage() {
   const [products, setProducts] = useState([]);
@@ -28,11 +34,34 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isCartVisible, setIsCartVisible] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+  const [currentAddress, setCurrentAddress] = useState(null);
+  const userName = localStorage.getItem("name");
+  useEffect(() => {
+    const addresses = JSON.parse(localStorage.getItem("addresses")) || [];
+    setCurrentAddress(addresses[0] || null);
+  }, []);
 
-  const handleAddToCart = () => {
-    setIsCartVisible(true);
+  const handleAddToCart = async (product) => {
+    let obj = {
+      userId,
+      productId: product._id,
+      title: product.title,
+      description: product.description,
+      image: product.image,
+      price: product.price,
+    };
+    try {
+      let res = await axios.post("/cart", obj, { withCredentials: true });
+      console.log(res.data);
+      setCartItems([...cartItems, product]);
+      setIsCartVisible(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -84,31 +113,85 @@ export default function ProductPage() {
     return <p>{error}</p>;
   }
 
-  // const handleAddToCart = (product) => {
-  //   const existingProduct = cart.find((item) => item.id === product.id);
-  //   if (existingProduct) {
-  //     setCart(
-  //       cart.map((item) =>
-  //         item.id === product.id
-  //           ? { ...item, quantity: item.quantity + 1 }
-  //           : item
-  //       )
-  //     );
-  //   } else {
-  //     setCart([...cart, { ...product, quantity: 1 }]);
-  //   }
-  //   setIsCartVisible(true);
-  // };
+  const handleLoginSignupClick = () => {
+    navigate("/profile");
+  };
 
-  // // Toggle cart visibility
-  // const toggleCartVisibility = () => {
-  //   setIsCartVisible(!isCartVisible);
-  // }
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
+  const handleLocationClick = () => {
+    navigate("/addresspage");
+  };
+
+  const isActive = (path) => window.location.pathname === path;
 
   return (
     <div className={styles.products}>
-      <Navbar />
+      <div className={styles.container}>
+        <p className={styles.offer}>
+          🌟 Get 5% Off your first order,
+          <span className={styles.promo}>Promo: ORDER5</span>
+        </p>
+        <div className={styles.cartLocation}>
+          <p>
+            <HiLocationMarker className={styles.loc} />
+            {currentAddress
+              ? `${currentAddress.fullAddress}, ${currentAddress.city}`
+              : ""}
+          </p>
+          <p className={styles.change} onClick={handleLocationClick}>
+            Change Location
+          </p>
+          <div
+            className={styles.cartConatiner}
+            onClick={() => setIsCartVisible(!isCartVisible)}
+          >
+            <img src={cart} alt="cart" className={styles.cart} />
+            <span className={styles.cartText}> My Cart </span>
+            <div className={styles.separator}></div>
+            <div className={styles.arrow}>
+              <FaArrowCircleDown />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.navbar}>
+        <div className={styles.logo}>
+          <img src={logo} alt="logo" />
+        </div>
+        <div className={styles.menu}>
+          <a
+            onClick={() => handleNavigation("/homepage")}
+            className={isActive("/homepage") ? styles.active : ""}
+          >
+            Home
+          </a>
+          <a>Browse Menu</a>
+          <a>Special Offers</a>
+          <a
+            onClick={() => handleNavigation("/productpage")}
+            className={isActive("/productpage") ? styles.active : ""}
+          >
+            Restaurants
+          </a>
+          <a>Track Order</a>
+        </div>
+        <div className={styles.loginSignup} onClick={handleLoginSignupClick}>
+          {userName ? (
+            <span className={styles.username}>
+              <IoIosContact className={styles.contact} />
+              Hey {userName}
+            </span>
+          ) : (
+            <a>
+              <IoIosContact className={styles.contact} /> Login/Signup
+            </a>
+          )}
+        </div>
+      </div>
 
       <div className={styles.heroModal}>
         <img src={bg} alt="background" className={styles.bg} />
@@ -116,8 +199,14 @@ export default function ProductPage() {
           <p>I'm lovin' it!</p>
           <h1>McDonald's East London</h1>
           <div className={styles.infoButtons}>
-            <div className={styles.heroButton}>Minimum Order: 12 GBP</div>
-            <div className={styles.heroButton}>Delivery in 20-25 Minutes</div>
+            <div className={styles.heroButton}>
+              <GoChecklist className={styles.heroModalIcons} /> Minimum Order:
+              12 GBP
+            </div>
+            <div className={styles.heroButton}>
+              <FaMotorcycle className={styles.heroModalIcons} /> Delivery in
+              20-25 Minutes
+            </div>
           </div>
         </div>
         <div className={styles.imageContent}>
@@ -126,7 +215,9 @@ export default function ProductPage() {
             <img src={rating} alt="ratings" />
           </div>
         </div>
-        <div className={styles.openStatus}>Open until 3:00 AM</div>
+        <div className={styles.openStatus}>
+          <BsClockFill className={styles.heroModalIcons} /> Open until 3:00 AM
+        </div>
       </div>
 
       <div className={styles.london}>
@@ -157,41 +248,37 @@ export default function ProductPage() {
 
         {isCartVisible && (
           <div className={styles.productCart}>
-            <Cart />
-            {/* {cartItems.map(item => <Cart key={item.id} {...item} />)} */}
+            <Cart cartItems={cartItems} />
           </div>
         )}
-        
       </div>
-
-      {/* {isCartVisible && (
-            <div className={styles.productCart}>
-              <Cart />
-
-            </div>
-          )} */}
-
       <div className={styles.containerCart}>
-        <div className={styles.discountModal} style={{
-          display: 'grid',
-          gridTemplateColumns: isCartVisible ? '450px 450px' : 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '50px',
-        }}>
+        <div
+          className={styles.discountModal}
+          style={{
+            display: "grid",
+            gridTemplateColumns: isCartVisible
+              ? "450px 450px"
+              : "repeat(auto-fit, minmax(350px, 1fr))",
+            gap: "50px",
+          }}
+        >
           <img src={vegan1} alt="first order discount" />
           <img src={vegan2} alt="Vegan Discount" />
           <img src={vegan3} alt="free ice-cream offer" />
         </div>
 
         <div className={styles.burgerText}>Burgers</div>
-        <div
-          // className={`${styles.gridContainer} ${
-          //   isCartVisible ? styles.gridShrink : ""
-          // }`}
-        >
-          <div className={styles.grid} style={{
-          display: 'grid',
-          gridTemplateColumns: isCartVisible ? '400px 400px' : 'auto auto auto',
-        }}>
+        <div className={styles.gridContainer}>
+          <div
+            className={styles.grid}
+            style={{
+              display: "grid",
+              gridTemplateColumns: isCartVisible
+                ? "400px 400px"
+                : "auto auto auto",
+            }}
+          >
             {products.map((product, index) => (
               <div key={index} className={styles.gridModal}>
                 <div className={styles.gridContent}>
@@ -203,7 +290,7 @@ export default function ProductPage() {
                   <img src={product.image} alt={product.title} />
                   <button
                     className={styles.gridAddButton}
-                    onClick={handleAddToCart}
+                    onClick={() => handleAddToCart(product)}
                   >
                     +
                   </button>
@@ -220,7 +307,15 @@ export default function ProductPage() {
           isCartVisible ? styles.gridShrink : ""
         }`}
       >
-        <div className={styles.grid}>
+        <div
+          className={styles.grid}
+          style={{
+            display: "grid",
+            gridTemplateColumns: isCartVisible
+              ? "400px 400px"
+              : "auto auto auto",
+          }}
+        >
           {products.map((product, index) => (
             <div key={index} className={styles.gridModal}>
               <div className={styles.gridContent}>
@@ -230,7 +325,12 @@ export default function ProductPage() {
               </div>
               <div className={styles.gridImage}>
                 <img src={product.image} alt={product.title} />
-                <button className={styles.gridAddButton} onClick={handleAddToCart}>+</button>
+                <button
+                  className={styles.gridAddButton}
+                  onClick={() => handleAddToCart(product)}
+                >
+                  +
+                </button>
               </div>
             </div>
           ))}
@@ -238,11 +338,7 @@ export default function ProductPage() {
       </div>
 
       <div className={styles.friesText}>Cold Drinks</div>
-      <div
-        className={`${styles.gridContainer} ${
-          isCartVisible ? styles.gridShrink : ""
-        }`}
-      >
+      <div className={styles.gridContainer}>
         <div className={styles.grid}>
           {products.map((product, index) => (
             <div key={index} className={styles.gridModal}>
@@ -253,7 +349,12 @@ export default function ProductPage() {
               </div>
               <div className={styles.gridImage}>
                 <img src={product.image} alt={product.title} />
-                <button className={styles.gridAddButton} onClick={handleAddToCart}>+</button>
+                <button
+                  className={styles.gridAddButton}
+                  onClick={() => handleAddToCart(product)}
+                >
+                  +
+                </button>
               </div>
             </div>
           ))}

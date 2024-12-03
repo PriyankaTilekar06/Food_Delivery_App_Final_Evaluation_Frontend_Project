@@ -13,13 +13,19 @@ import Profile from "./pages/ProfilePage/Profile";
 import AddressPage from "./pages/AddressPage/AddressPage";
 import OrderSucessull from "./pages/OrderSuccessfull/OrderSucessull";
 import PrivateRoute from "./components/PrivateAuth";
+import { useEffect } from "react";
+import ShareCartPage from "./pages/ShareCartPage/ShareCartPage";
 
 axios.defaults.baseURL = "https://food-delivery-app-final-evaluation-backend-project.vercel.app";
 axios.defaults.withCredentials = true;
 
 function App() {
+
+  useEffect(() => {
+    document.title = "Food Delivery App"; 
+  }, [])
+
   return (
-    // <UserContextProvider>
     <>
       <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
       <Routes>
@@ -33,9 +39,9 @@ function App() {
         <Route path="/profile" exact element={<PrivateRoute><Profile /></PrivateRoute>} />
         <Route path="/addresspage" exact element={<PrivateRoute><AddressPage /></PrivateRoute>} />
         <Route path="/ordersuccesfull" exact element={<PrivateRoute><OrderSucessull /></PrivateRoute>} />
+        <Route path="/productpage/share/:id" exact element={<ShareCartPage />} />
       </Routes>
       </>
-    // </UserContextProvider>
     
   );
 }

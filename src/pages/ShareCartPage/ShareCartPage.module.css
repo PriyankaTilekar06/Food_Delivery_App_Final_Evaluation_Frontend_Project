@@ -17,7 +17,6 @@
   border-radius: 10px;
   margin-bottom: 10px;
   font-size: small;
-  cursor: pointer;
 }
 
 .share {
@@ -56,7 +55,6 @@
   border-bottom: 1px solid #e0e0e0;
   line-height: 5px;
 }
-
 .basketItem span {
   line-height: 20px;
 }
