@@ -124,7 +124,7 @@ export default function ProductPage() {
   const handleLocationClick = () => {
     navigate("/addresspage");
   };
-
+  console.log(isCartVisible)
   const isActive = (path) => window.location.pathname === path;
 
   return (
