@@ -4,7 +4,6 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import axios from "axios";
 import { Toaster } from "react-hot-toast";
-import { UserContextProvider } from "../context/userContext";
 import HomePage from "./pages/HomePage/HomePage";
 import ProductPage from "./pages/ProductPage/ProductPage";
 import CheckoutPage from "./pages/CheckOutPage/CheckoutPage";
@@ -17,6 +16,7 @@ import { useEffect } from "react";
 import ShareCartPage from "./pages/ShareCartPage/ShareCartPage";
 
 axios.defaults.baseURL = "https://food-delivery-app-final-evaluation-backend-project.vercel.app";
+// axios.defaults.baseURL = "http://localhost:8000";
 axios.defaults.withCredentials = true;
 
 function App() {
